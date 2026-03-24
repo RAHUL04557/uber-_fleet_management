@@ -19,7 +19,6 @@ MODEL_PATH = BASE_DIR / "best_model.joblib"
 METRICS_PATH = BASE_DIR / "model_metrics.csv"
 REPORT_PATH = BASE_DIR / "model_report.json"
 RANDOM_STATE = 42
-DEPLOYMENT_MODEL_NAME = "Gradient Boosting"
 
 
 def evaluate_model(model, x_train, x_test, y_train, y_test):
@@ -70,11 +69,7 @@ def main():
 
     results_df = pd.DataFrame(results).sort_values(by=["rmse", "mae", "r2"])
     best_model_name = results_df.iloc[0]["model"]
-    deployment_model_name = (
-        DEPLOYMENT_MODEL_NAME
-        if DEPLOYMENT_MODEL_NAME in trained_models
-        else best_model_name
-    )
+    deployment_model_name = best_model_name
     deployment_model = trained_models[deployment_model_name]
 
     artifact = {

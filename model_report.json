@@ -4,7 +4,7 @@
   "train_rows": 154398,
   "test_rows": 38600,
   "best_model": "Random Forest",
-  "deployment_model": "Gradient Boosting",
+  "deployment_model": "Random Forest",
   "metrics": [
     {
       "model": "Linear Regression",
