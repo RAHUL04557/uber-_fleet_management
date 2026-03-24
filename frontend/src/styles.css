@@ -77,6 +77,7 @@ select {
 .stats-panel,
 .form-panel,
 .info-panel,
+.comparison-panel,
 .result-panel,
 .map-panel,
 .empty-panel {
@@ -132,7 +133,8 @@ select {
 }
 
 .metric-grid,
-.result-grid {
+.result-grid,
+.comparison-table {
   display: grid;
   gap: 14px;
 }
@@ -312,6 +314,32 @@ select {
   color: #f1ede4;
 }
 
+.comparison-row {
+  display: grid;
+  grid-template-columns: 1.6fr 0.7fr 0.7fr 0.6fr;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #ece6d8;
+}
+
+.comparison-head {
+  background: transparent;
+  border: 0;
+  color: #f4c95d;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  padding: 0 4px 8px;
+}
+
+.comparison-best {
+  border-color: rgba(244, 201, 93, 0.4);
+  background: rgba(244, 201, 93, 0.09);
+}
+
 .route-map {
   width: 100%;
   min-height: 420px;
@@ -333,7 +361,12 @@ select {
 
   .split-fields,
   .vehicle-grid,
-  .result-grid {
+  .result-grid,
+  .comparison-row {
     grid-template-columns: 1fr;
+  }
+
+  .comparison-head {
+    display: none;
   }
 }

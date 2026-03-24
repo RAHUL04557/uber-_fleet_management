@@ -235,100 +235,125 @@ export default function App() {
         ) : null}
 
         {view === "form" ? (
-          <section className="form-panel">
-            <div className="panel-header">Ride Details</div>
-            <form className="ride-form" onSubmit={handleSubmit}>
-              <label>
-                Pickup Location
-                <select
-                  value={form.pickupLocation}
-                  onChange={(event) => updateField("pickupLocation", event.target.value)}
-                >
-                  {Object.keys(meta.locations).map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label>
-                Dropoff Location
-                <select
-                  value={form.dropoffLocation}
-                  onChange={(event) => updateField("dropoffLocation", event.target.value)}
-                >
-                  {Object.keys(meta.locations).map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <div>
-                <div className="field-label">Vehicle Type</div>
-                <div className="vehicle-grid">
-                  {Object.keys(meta.vehicles).map((vehicle) => (
-                    <button
-                      key={vehicle}
-                      className={vehicle === form.vehicleType ? "vehicle-card active" : "vehicle-card"}
-                      style={{ "--vehicle-accent": vehicleAccents[vehicle] }}
-                      type="button"
-                      onClick={() => updateField("vehicleType", vehicle)}
-                    >
-                      <span>{vehicle}</span>
-                      <small>Max {meta.vehicles[vehicle].max_passengers}</small>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <label>
-                Passenger Count
-                <input
-                  type="number"
-                  min="1"
-                  max={maxPassengers}
-                  value={form.passengerCount}
-                  onChange={handlePassengerCountChange}
-                  onBlur={handlePassengerCountBlur}
-                />
-              </label>
-              {passengerCountError ? <div className="field-error">{passengerCountError}</div> : null}
-
-              <div className="split-fields">
+          <>
+            <section className="form-panel">
+              <div className="panel-header">Ride Details</div>
+              <form className="ride-form" onSubmit={handleSubmit}>
                 <label>
-                  Ride Date
-                  <input
-                    type="date"
-                    min={meta.today}
-                    value={form.rideDate}
-                    onChange={(event) => updateField("rideDate", event.target.value)}
-                  />
-                </label>
-
-                <label>
-                  Pickup Time
+                  Pickup Location
                   <select
-                    value={form.rideTime}
-                    onChange={(event) => updateField("rideTime", event.target.value)}
+                    value={form.pickupLocation}
+                    onChange={(event) => updateField("pickupLocation", event.target.value)}
                   >
-                    {timeState.timeOptions.map((timeOption) => (
-                      <option key={timeOption} value={timeOption}>
-                        {timeOption}
+                    {Object.keys(meta.locations).map((location) => (
+                      <option key={location} value={location}>
+                        {location}
                       </option>
                     ))}
                   </select>
                 </label>
-              </div>
 
-              <button className="submit-button" type="submit" disabled={submitting}>
-                {submitting ? "Predicting..." : "Predict Fare"}
-              </button>
-            </form>
-            {error ? <div className="error-banner">{error}</div> : null}
-          </section>
+                <label>
+                  Dropoff Location
+                  <select
+                    value={form.dropoffLocation}
+                    onChange={(event) => updateField("dropoffLocation", event.target.value)}
+                  >
+                    {Object.keys(meta.locations).map((location) => (
+                      <option key={location} value={location}>
+                        {location}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <div>
+                  <div className="field-label">Vehicle Type</div>
+                  <div className="vehicle-grid">
+                    {Object.keys(meta.vehicles).map((vehicle) => (
+                      <button
+                        key={vehicle}
+                        className={vehicle === form.vehicleType ? "vehicle-card active" : "vehicle-card"}
+                        style={{ "--vehicle-accent": vehicleAccents[vehicle] }}
+                        type="button"
+                        onClick={() => updateField("vehicleType", vehicle)}
+                      >
+                        <span>{vehicle}</span>
+                        <small>Max {meta.vehicles[vehicle].max_passengers}</small>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <label>
+                  Passenger Count
+                  <input
+                    type="number"
+                    min="1"
+                    max={maxPassengers}
+                    value={form.passengerCount}
+                    onChange={handlePassengerCountChange}
+                    onBlur={handlePassengerCountBlur}
+                  />
+                </label>
+                {passengerCountError ? <div className="field-error">{passengerCountError}</div> : null}
+
+                <div className="split-fields">
+                  <label>
+                    Ride Date
+                    <input
+                      type="date"
+                      min={meta.today}
+                      value={form.rideDate}
+                      onChange={(event) => updateField("rideDate", event.target.value)}
+                    />
+                  </label>
+
+                  <label>
+                    Pickup Time
+                    <select
+                      value={form.rideTime}
+                      onChange={(event) => updateField("rideTime", event.target.value)}
+                    >
+                      {timeState.timeOptions.map((timeOption) => (
+                        <option key={timeOption} value={timeOption}>
+                          {timeOption}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                <button className="submit-button" type="submit" disabled={submitting}>
+                  {submitting ? "Predicting..." : "Predict Fare"}
+                </button>
+              </form>
+              {error ? <div className="error-banner">{error}</div> : null}
+            </section>
+
+            <section className="comparison-panel">
+              <div className="panel-header">Model Comparison</div>
+              <div className="comparison-table">
+                <div className="comparison-row comparison-head">
+                  <span>Model</span>
+                  <span>MAE</span>
+                  <span>RMSE</span>
+                  <span>R2</span>
+                </div>
+                {meta.metrics.map((item) => (
+                  <div
+                    key={item.model}
+                    className={item.model === meta.modelName ? "comparison-row comparison-best" : "comparison-row"}
+                  >
+                    <span>{item.model}</span>
+                    <span>{item.mae}</span>
+                    <span>{item.rmse}</span>
+                    <span>{item.r2}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </>
         ) : result ? (
           <>
             <section className="result-panel">
