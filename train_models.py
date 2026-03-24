@@ -19,6 +19,7 @@ MODEL_PATH = BASE_DIR / "best_model.joblib"
 METRICS_PATH = BASE_DIR / "model_metrics.csv"
 REPORT_PATH = BASE_DIR / "model_report.json"
 RANDOM_STATE = 42
+MAX_MEMORY_MB = 512
 
 
 def evaluate_model(model, x_train, x_test, y_train, y_test):
@@ -43,9 +44,9 @@ def main():
     models = {
         "Linear Regression": LinearRegression(),
         "Random Forest": RandomForestRegressor(
-            n_estimators=200,
-            max_depth=18,
-            min_samples_leaf=2,
+            n_estimators=96,
+            max_depth=14,
+            min_samples_leaf=4,
             n_jobs=1,
             random_state=RANDOM_STATE,
         ),
@@ -76,15 +77,20 @@ def main():
         "model_name": deployment_model_name,
         "feature_columns": FEATURE_COLUMNS,
         "model": deployment_model,
+        "max_memory_mb": MAX_MEMORY_MB,
     }
     joblib.dump(artifact, MODEL_PATH, compress=3)
     results_df.to_csv(METRICS_PATH, index=False)
+
+    artifact_size_mb = round(MODEL_PATH.stat().st_size / (1024 * 1024), 2)
 
     report = {
         "dataset_path": str(DATA_PATH),
         "total_rows_after_cleaning": int(len(x)),
         "train_rows": int(len(x_train)),
         "test_rows": int(len(x_test)),
+        "max_memory_mb": MAX_MEMORY_MB,
+        "artifact_size_mb": artifact_size_mb,
         "best_model": best_model_name,
         "deployment_model": deployment_model_name,
         "metrics": results,

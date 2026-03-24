@@ -3,6 +3,8 @@
   "total_rows_after_cleaning": 192998,
   "train_rows": 154398,
   "test_rows": 38600,
+  "max_memory_mb": 512,
+  "artifact_size_mb": 10.71,
   "best_model": "Random Forest",
   "deployment_model": "Random Forest",
   "metrics": [
@@ -14,9 +16,9 @@
     },
     {
       "model": "Random Forest",
-      "mae": 1.9645,
-      "rmse": 3.6021,
-      "r2": 0.8518
+      "mae": 1.9908,
+      "rmse": 3.6211,
+      "r2": 0.8502
     },
     {
       "model": "Gradient Boosting",
