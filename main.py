@@ -510,7 +510,7 @@ APP_HTML = """
           rideTime: data.timeOptions[data.defaultTimeIndex] || data.timeOptions[0] || "",
         };
 
-        els.bestModelChip.textContent = "Best model: " + state.meta.modelName;
+        els.bestModelChip.textContent = "Deployment model: " + state.meta.modelName;
         els.rideDate.min = data.today;
         els.rideDate.value = state.form.rideDate;
         renderLocations();

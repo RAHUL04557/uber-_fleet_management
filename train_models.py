@@ -19,6 +19,7 @@ MODEL_PATH = BASE_DIR / "best_model.joblib"
 METRICS_PATH = BASE_DIR / "model_metrics.csv"
 REPORT_PATH = BASE_DIR / "model_report.json"
 RANDOM_STATE = 42
+DEPLOYMENT_MODEL_NAME = "Gradient Boosting"
 
 
 def evaluate_model(model, x_train, x_test, y_train, y_test):
@@ -69,14 +70,19 @@ def main():
 
     results_df = pd.DataFrame(results).sort_values(by=["rmse", "mae", "r2"])
     best_model_name = results_df.iloc[0]["model"]
-    best_model = trained_models[best_model_name]
+    deployment_model_name = (
+        DEPLOYMENT_MODEL_NAME
+        if DEPLOYMENT_MODEL_NAME in trained_models
+        else best_model_name
+    )
+    deployment_model = trained_models[deployment_model_name]
 
     artifact = {
-        "model_name": best_model_name,
+        "model_name": deployment_model_name,
         "feature_columns": FEATURE_COLUMNS,
-        "model": best_model,
+        "model": deployment_model,
     }
-    joblib.dump(artifact, MODEL_PATH)
+    joblib.dump(artifact, MODEL_PATH, compress=3)
     results_df.to_csv(METRICS_PATH, index=False)
 
     report = {
@@ -85,13 +91,15 @@ def main():
         "train_rows": int(len(x_train)),
         "test_rows": int(len(x_test)),
         "best_model": best_model_name,
+        "deployment_model": deployment_model_name,
         "metrics": results,
     }
     REPORT_PATH.write_text(json.dumps(report, indent=2), encoding="utf-8")
 
     print("Training completed.")
     print(results_df.to_string(index=False))
-    print(f"\nBest model saved to: {MODEL_PATH.name}")
+    print(f"\nBest comparison model: {best_model_name}")
+    print(f"Deployment model saved to: {MODEL_PATH.name} ({deployment_model_name})")
 
 
 if __name__ == "__main__":
