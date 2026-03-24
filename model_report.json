@@ -1,0 +1,27 @@
+{
+  "dataset_path": "C:\\Users\\KIIT0001\\OneDrive\\Desktop\\uber\\uber.csv",
+  "total_rows_after_cleaning": 192998,
+  "train_rows": 154398,
+  "test_rows": 38600,
+  "best_model": "Random Forest",
+  "metrics": [
+    {
+      "model": "Linear Regression",
+      "mae": 2.3604,
+      "rmse": 4.9976,
+      "r2": 0.7147
+    },
+    {
+      "model": "Random Forest",
+      "mae": 1.9645,
+      "rmse": 3.6021,
+      "r2": 0.8518
+    },
+    {
+      "model": "Gradient Boosting",
+      "mae": 2.0798,
+      "rmse": 3.7239,
+      "r2": 0.8416
+    }
+  ]
+}
